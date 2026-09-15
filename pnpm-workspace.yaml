@@ -1,0 +1,9 @@
+packages:
+  - frontend
+  - backend
+
+# pnpm 11 ignores dependency build scripts unless they are allow-listed here.
+# Without this, step 3 fails with ERR_PNPM_IGNORED_BUILDS.
+allowBuilds:
+  lefthook: true
+  '@biomejs/biome': true
