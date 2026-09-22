@@ -107,7 +107,16 @@ export default function Page() {
 				path: "/signal",
 				key: "malu-dev",
 				config: {
-					iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+					iceServers: [
+						{
+							urls: [
+								`stun:${window.location.hostname}:3478`,
+								`turn:${window.location.hostname}:3478`,
+							],
+							username: "malu-dev",
+							credential: "malu-dev",
+						},
+					],
 					sdpSemantics: "unified-plan",
 				},
 			},
