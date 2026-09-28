@@ -16,13 +16,31 @@ Run an Ubuntu Server with Docker and pnpm.
 Run the signaling server [PeerJS](https://peerjs.com/).
 
 ```
-docker run -p 9000:9000 -d peerjs/peerjs-server --port 9000 --cors malu-dev --key malu-dev --path /signal --allow_discovery
+docker run -p 9000:9000 -d peerjs/peerjs-server \
+    --port 9000 --cors malu-dev --key malu-dev --path /peer --allow_discovery \
+    --sslkey 
 ```
 
-Run the TURN/STUN server [coturn](https://github.com/coturn/coturn)
+Run the TURN/STUN server [coturn](https://github.com/coturn/coturn).
+Note that `--allow-loopback-peers` must not be used in production, same for `--verbose`, [see documentation](https://github.com/coturn/coturn/blob/master/README.turnserver#L271).
 
 ```
-docker run -d -p 3478:3478 -p 3478:3478/udp -p 5349:5349 -p 5349:5349/udp -p 49152-49155:49152-49155/udp coturn/coturn --min-port=49152 --max-port=49155
+docker run -d -p 3478:3478 -p 3478:3478/udp -p 5349:5349 -p 5349:5349/udp -p 5766:5766 -p 5766:5766/udp -p 8080:8080 -p 8080:8080/udp -p 49152-49155:49152-49155/udp coturn/coturn \
+    -n --verbose --log-file=stdout \
+    --user=malu-dev:malu-dev \
+    --min-port=49152 --max-port=49155 \
+    --lt-cred-mech --fingerprint \
+    --no-multicast-peers \
+    --allow-loopback-peers \
+    --listening-ip=127.0.0.1 \
+    --external-ip=127.0.0.1 \
+    --realm=localhost \
+    --web-admin \
+    --web-admin-ip=127.0.0.1 \
+    --web-admin-port=8080 \
+    --cli-ip=127.0.0.1 \
+    --cli-port=5766 \
+    --cli-password=malu-dev
 ```
 
 Clone this repo on the server and run it as a [NextJS](https://nextjs.org/) app

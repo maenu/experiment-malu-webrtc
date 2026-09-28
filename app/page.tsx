@@ -104,8 +104,9 @@ export default function Page() {
 				host: window.location.hostname,
 				port: 9000,
 				debug: 1,
-				path: "/signal",
-				key: "malu-dev",
+				path: "/peer",
+				key: window.location.hostname,
+				secure: true,
 				config: {
 					iceServers: [
 						{
@@ -113,8 +114,8 @@ export default function Page() {
 								`stun:${window.location.hostname}:3478`,
 								`turn:${window.location.hostname}:3478`,
 							],
-							username: "malu-dev",
-							credential: "malu-dev",
+							username: window.location.hostname,
+							credential: window.location.hostname,
 						},
 					],
 					sdpSemantics: "unified-plan",

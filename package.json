@@ -3,7 +3,7 @@
 		"check": "biome check .",
 		"check:fix": "biome check --write .",
 		"typecheck": "tsc --noEmit",
-		"dev": "next dev",
+		"dev": "next dev --experimental-https --experimental-https-key ca/key.pem --experimental-https-cert ca/cert.pem",
 		"build": "next build",
 		"start": "next start",
 		"lint": "biome check",

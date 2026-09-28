@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	allowedDevOrigins: ["malu-dev"],
+	allowedDevOrigins: ["malu-dev.gewa.local"],
 	/* config options here */
 };
 
