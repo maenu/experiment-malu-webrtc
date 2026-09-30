@@ -25,9 +25,14 @@ cd "$DIR"
 
 HOST="$(hostname --fqdn)"
 USER="$(whoami)"
+export CAROOT="$DIR"
 
-CAROOT="$DIR" mkcert -install
-CAROOT="$DIR" mkcert -key-file key.pem -cert-file cert.pem "$HOST"
+rm cert.pem
+rm key.pem
+rm -f rootCA-key.pem
+rm rootCA.pem
+mkcert -install
+mkcert -key-file key.pem -cert-file cert.pem "$HOST"
 
 #rm key.pem cert.pem
 #openssl req -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -days 365 -subj "/C=CH/ST=Bern/L=Zollikofen/O=GEWA/OU=digihub/CN=${HOST}/emailAddress=${USER}@${HOST}"

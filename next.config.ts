@@ -1,7 +1,10 @@
+import { execSync } from "node:child_process";
 import type { NextConfig } from "next";
 
+const hostname = execSync("hostname --fqdn").toString().trim();
+
 const nextConfig: NextConfig = {
-	allowedDevOrigins: ["malu-dev.gewa.local"],
+	allowedDevOrigins: [hostname],
 	/* config options here */
 };
 

@@ -14,3 +14,10 @@ turnserver --syslog --log-file=stdout -v -m 4 \
     --cli-password="${HOST}" \
     --pidfile=/var/tmp/turnserver.pid \
     "${@}"
+
+#    --web-admin \
+#    --web-admin-ip=127.0.0.1 \
+#    --web-admin-port=8080 \
+#    --cli-ip=127.0.0.1 \
+#    --cli-port=5766 \
+#    --cli-password=dev-malu

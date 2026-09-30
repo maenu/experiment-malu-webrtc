@@ -8,15 +8,15 @@ importers:
 
   .:
     dependencies:
+      experiment-malu-webrtc:
+        specifier: 'link:'
+        version: 'link:'
       next:
         specifier: ^16.3.5
         version: 16.3.5(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       peerjs:
         specifier: ^1.5.5
         version: 1.5.5
-      qrcodejs2:
-        specifier: ^0.0.2
-        version: 0.0.2
       react:
         specifier: ^19.3.0
         version: 19.3.0
@@ -805,9 +805,6 @@ packages:
     resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  qrcodejs2@0.0.2:
-    resolution: {integrity: sha512-+Y4HA+cb6qUzdgvI3KML8GYpMFwB24dFwzMkS/yXq6hwtUGNUnZQdUnksrV1XGMc2mid5ROw5SAuY9XhI3ValA==}
-
   react-dom@19.3.0:
     resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
     peerDependencies:
@@ -1516,8 +1513,6 @@ snapshots:
       nanoid: 3.3.19
       picocolors: 1.1.1
       source-map-js: 1.2.1
-
-  qrcodejs2@0.0.2: {}
 
   react-dom@19.3.0(react@19.3.0):
     dependencies:
