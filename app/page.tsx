@@ -132,21 +132,27 @@ export default function Page() {
 					.toString(36)
 					.padStart(4, "0")}`,
 				{
-					host: process.env.EXPERIMENT_MALU_WEBRTC_HOST,
-					port: parseInt(process.env.EXPERIMENT_MALU_WEBRTC_PEERJS_PORT, 10),
+					host: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST,
+					port: parseInt(
+						process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_PORT,
+						10,
+					),
 					debug: 1,
-					path: process.env.EXPERIMENT_MALU_WEBRTC_PEERJS_PATH,
-					key: process.env.EXPERIMENT_MALU_WEBRTC_PEERJS_KEY,
+					path: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_PATH,
+					key: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_KEY,
 					secure: true,
 					config: {
 						iceServers: [
 							{
 								urls: [
-									`stun:${process.env.EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
-									`turn:${process.env.EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
+									`stun:${process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
+									`turn:${process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
 								],
-								username: process.env.EXPERIMENT_MALU_WEBRTC_COTURN_USER,
-								credential: process.env.EXPERIMENT_MALU_WEBRTC_COTURN_PASSWORD,
+								username:
+									process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_COTURN_USER,
+								credential:
+									process.env
+										.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_COTURN_PASSWORD,
 							},
 						],
 						sdpSemantics: "unified-plan",

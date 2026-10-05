@@ -24,20 +24,18 @@ app.prepare().then(() => {
 				"default-src": ["'self'"],
 				"script-src": [
 					"'self'",
-					(request, response) => {
-						return `'nonce-${request.headers["x-nonce"]}'`;
-					},
+					"'unsafe-inline'",
 					...(dev ? ["'unsafe-eval'"] : []),
 				],
-				"style-src": [
-					"'self'",
-					(request, response) => {
-						return `'nonce-${request.headers["x-nonce"]}'`;
-					},
-				],
+				"style-src": ["'self'", "'unsafe-inline'"],
 				"img-src": ["'self'", "blob:", "data:"],
 				"font-src": ["'self'"],
 				"object-src": ["'none'"],
+				"connect-src": [
+					"'self'",
+					`https://${process.env.EXPERIMENT_MALU_WEBRTC_HOST}:*`,
+					`wss://${process.env.EXPERIMENT_MALU_WEBRTC_HOST}:*`,
+				],
 			},
 		},
 	};
@@ -97,9 +95,6 @@ app.prepare().then(() => {
 				response.end();
 				return;
 			}
-			request.headers["x-nonce"] = Buffer.from(crypto.randomUUID()).toString(
-				"base64",
-			);
 			securityHandler(request, response, (error?) => {
 				if (error) {
 					console.error("https", "security", error);
@@ -107,10 +102,6 @@ app.prepare().then(() => {
 					response.end();
 					return;
 				}
-				response.setHeader("x-nonce", request.headers["x-nonce"]);
-				request.headers["content-security-policy"] = response.getHeader(
-					"content-security-policy",
-				) as string;
 				nextHandler(request, response);
 			});
 		});

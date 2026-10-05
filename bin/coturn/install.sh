@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")/../.."
-source .env
+source .env.${NODE_ENV:-development}.local
 DIR="$(pwd)"
 
 #from https://github.com/coturn/coturn/blob/master/docker/coturn/debian/Dockerfile
@@ -17,7 +17,8 @@ sudo apt-get install -y --no-install-recommends --no-install-suggests \
             libmongoc-dev \
             libmicrohttpd-dev
 
-if [ ! -d "/opt/coturn" ]; then
+if [ ! -d "/opt/coturn" ]
+then
     cd /opt
     sudo mkdir -p /opt/coturn
     sudo chown -R $(whoami):$(whoami) /opt/coturn
@@ -26,10 +27,9 @@ if [ ! -d "/opt/coturn" ]; then
 else
     cd /opt/coturn
 fi
-./configure
-make
-sudo make install
-
-cd "$DIR"
-sudo cp bin/coturn/experiment-malu-webrtc-coturn.service /etc/systemd/system/
-sudo systemctl daemon-reload
+if ! command -v turnserver >/dev/null 2>&1
+then
+    ./configure
+    make
+    sudo make install
+fi
