@@ -1,11 +1,24 @@
-import { execSync } from "node:child_process";
 import type { NextConfig } from "next";
 
-const hostname = execSync("hostname --fqdn").toString().trim();
-
 const nextConfig: NextConfig = {
-	allowedDevOrigins: [hostname],
-	/* config options here */
+	allowedDevOrigins: ["dev-malu.gewa.local"],
+	cacheComponents: true, // needed for CSP nonce to work?
+	compress: false,
+	webpack: (config) => {
+		return {
+			...config,
+			optimization: {
+				...config.optimization,
+				minimize: false,
+			},
+		};
+	},
+	logging: {
+		fetches: {
+			fullUrl: true,
+		},
+		serverFunctions: true,
+	},
 };
 
 export default nextConfig;

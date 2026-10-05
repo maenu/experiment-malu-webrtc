@@ -132,21 +132,21 @@ export default function Page() {
 					.toString(36)
 					.padStart(4, "0")}`,
 				{
-					host: window.location.hostname,
-					port: 9000,
+					host: process.env.EXPERIMENT_MALU_WEBRTC_HOST,
+					port: parseInt(process.env.EXPERIMENT_MALU_WEBRTC_PEERJS_PORT, 10),
 					debug: 1,
-					path: "/peer",
-					key: window.location.hostname,
+					path: process.env.EXPERIMENT_MALU_WEBRTC_PEERJS_PATH,
+					key: process.env.EXPERIMENT_MALU_WEBRTC_PEERJS_KEY,
 					secure: true,
 					config: {
 						iceServers: [
 							{
 								urls: [
-									`stun:${window.location.hostname}:3478`,
-									`turn:${window.location.hostname}:3478`,
+									`stun:${process.env.EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
+									`turn:${process.env.EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
 								],
-								username: window.location.hostname,
-								credential: window.location.hostname,
+								username: process.env.EXPERIMENT_MALU_WEBRTC_COTURN_USER,
+								credential: process.env.EXPERIMENT_MALU_WEBRTC_COTURN_PASSWORD,
 							},
 						],
 						sdpSemantics: "unified-plan",

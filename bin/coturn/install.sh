@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+cd "$(dirname "$0")/../.."
+source .env
+DIR="$(pwd)"
+
 #from https://github.com/coturn/coturn/blob/master/docker/coturn/debian/Dockerfile
 sudo apt-get update \
     && sudo apt-get install -y --no-install-recommends --no-install-suggests \
@@ -25,3 +29,7 @@ fi
 ./configure
 make
 sudo make install
+
+cd "$DIR"
+sudo cp bin/coturn/experiment-malu-webrtc-coturn.service /etc/systemd/system/
+sudo systemctl daemon-reload
