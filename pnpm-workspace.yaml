@@ -6,3 +6,4 @@ packages:
 allowBuilds:
   lefthook: true
   '@biomejs/biome': true
+  puppeteer: true

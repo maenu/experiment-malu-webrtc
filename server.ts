@@ -112,7 +112,7 @@ app.prepare().then(() => {
 	);
 	const httpServer = createHttpServer((request, response) => {
 		response.writeHead(301, {
-			location: `https://${request.headers.host}${request.url}`,
+			location: `https://${process.env.EXPERIMENT_MALU_WEBRTC_HOST}${process.env.EXPERIMENT_MALU_WEBRTC_HTTPS_PORT === "443" ? "" : `:${process.env.EXPERIMENT_MALU_WEBRTC_HTTPS_PORT}`}${request.url}`,
 		});
 		response.end();
 	});

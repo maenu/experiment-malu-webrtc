@@ -16,6 +16,12 @@ Run an Ubuntu Server with Docker.
 Create CA: `./bin/ca/install.sh`.
 Install `ca/rootCA.pem` into Firefox at `about:settings#connectionSecurity`, `Certificates > Manage certificates > Authorities > Import...`.
 
+CA installed, HSTS enabled. To go back to HTTP, you need to forget HSTS by `Ctrl Shift H`, find this site, right-click, `Forget about this site...`, open site again in new tab (this tab has not forgotten about HSTS yet).
+
+[http://dev-malu.gewa.local:3080/](http://dev-malu.gewa.local:3080/)
+
+[https://dev-malu.gewa.local:3443/](https://dev-malu.gewa.local:3443/)
+
 Run the signaling server [PeerJS](https://peerjs.com/): `./bin/peerjs/start-server.sh`
 
 Run the TURN/STUN server [coturn](https://github.com/coturn/coturn): `./bin/coturn/start-server.sh`

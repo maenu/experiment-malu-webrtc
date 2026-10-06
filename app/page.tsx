@@ -1,10 +1,10 @@
 "use client";
 
 import { Peer } from "peerjs";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 export default function Page() {
-	const initialized = useRef<boolean | null>(null); // ridiculous...
+	const initializaton = useRef<string>("not started"); // ridiculous...
 	const localAudioElement = useRef<HTMLAudioElement | null>(null);
 	const remoteAudioElement = useRef<HTMLAudioElement | null>(null);
 	const containerElement = useRef<HTMLElement | null>(null);
@@ -66,15 +66,15 @@ export default function Page() {
 			},
 		);
 	}
-	function onPeerOpen() {
+	const onPeerOpen = useEffectEvent(() => {
 		setStatus(`Your device ID is: ${peer.id}`);
 		console.log("peer open");
-	}
-	function onPeerConnection(connection) {
+	});
+	const onPeerConnection = useEffectEvent((connection) => {
 		setDataConnection(connection);
 		console.log("peer connection");
-	}
-	function onPeerCall(connection) {
+	});
+	const onPeerCall = useEffectEvent((connection) => {
 		if (!confirm("Do you want to answer?")) {
 			console.log("call denied");
 			return;
@@ -85,82 +85,42 @@ export default function Page() {
 			return mediaConnection;
 		});
 		console.log("peer call");
-	}
-	function onPeerClose() {
+	});
+	const onPeerClose = useEffectEvent(() => {
 		console.log("peer close");
-	}
-	function onPeerDisconnected() {
+	});
+	const onPeerDisconnected = useEffectEvent(() => {
 		console.log("peer disconnected");
-	}
-	function onPeerError(error) {
+	});
+	const onPeerError = useEffectEvent((error) => {
 		console.error("peer error", error);
-	}
-	function onDataConnectionOpen() {
+	});
+	const onDataConnectionOpen = useEffectEvent(() => {
 		console.log("dataConnection open");
-	}
-	function onDataConnectionData(data) {
+	});
+	const onDataConnectionData = useEffectEvent((data) => {
 		console.log("dataConnection data", data);
-	}
-	function onDataConnectionClose() {
+	});
+	const onDataConnectionClose = useEffectEvent(() => {
 		// WARNING event not in firefox yet
 		console.log("dataConnection close");
 		showCallContent();
-	}
-	function onDataConnectionError(error) {
+	});
+	const onDataConnectionError = useEffectEvent((error) => {
 		console.log("dataConnection error", error);
-	}
-	function onMediaConnectionStream(stream) {
+	});
+	const onMediaConnectionStream = useEffectEvent((stream) => {
 		remoteAudioElement.current.srcObject = stream;
 		remoteAudioElement.current.autoplay = true;
 		console.log("mediaConnection stream", stream);
 		showConnectedContent();
-	}
-	function onMediaConnectionClose() {
+	});
+	const onMediaConnectionClose = useEffectEvent(() => {
 		console.log("mediaConnection closed");
-	}
-	function onMediaConnectionError(error) {
+	});
+	const onMediaConnectionError = useEffectEvent((error) => {
 		console.error("mediaConnection error", error);
-	}
-	useEffect(() => {
-		if (initialized.current !== false) {
-			return;
-		}
-		initialized.current = true;
-		setPeer(
-			new Peer(
-				`${Math.floor(Math.random() * 2 ** 18)
-					.toString(36)
-					.padStart(4, "0")}`,
-				{
-					host: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST,
-					port: parseInt(
-						process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_PORT,
-						10,
-					),
-					debug: 1,
-					path: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_PATH,
-					key: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_KEY,
-					secure: true,
-					config: {
-						iceServers: [
-							{
-								urls: [
-									`stun:${process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
-									`turn:${process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
-								],
-								username:
-									process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_COTURN_USER,
-								credential:
-									process.env
-										.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_COTURN_PASSWORD,
-							},
-						],
-						sdpSemantics: "unified-plan",
-					},
-				},
-			),
-		);
-	}, [localStream]);
+	});
 	useEffect(() => {
 		if (peer === null) {
 			return;
@@ -218,9 +178,10 @@ export default function Page() {
 		};
 	}, [mediaConnection]);
 	useEffect(() => {
-		if (typeof window === "undefined") {
+		if (initializaton.current !== "not started") {
 			return;
 		}
+		initializaton.current = "starting";
 		const setup = async () => {
 			const stream = await navigator.mediaDevices.getUserMedia({
 				video: false,
@@ -228,8 +189,42 @@ export default function Page() {
 			});
 			localAudioElement.current.srcObject = stream;
 			localAudioElement.current.autoplay = true;
-			initialized.current = false;
 			setLocalStream(stream);
+			setPeer(
+				new Peer(
+					`${Math.floor(Math.random() * 2 ** 18)
+						.toString(36)
+						.padStart(4, "0")}`,
+					{
+						host: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST,
+						port: parseInt(
+							process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_PORT,
+							10,
+						),
+						debug: 1,
+						path: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_PATH,
+						key: process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_PEERJS_KEY,
+						secure: true,
+						config: {
+							iceServers: [
+								{
+									urls: [
+										`stun:${process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
+										`turn:${process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_HOST}:3478`,
+									],
+									username:
+										process.env.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_COTURN_USER,
+									credential:
+										process.env
+											.NEXT_PUBLIC_EXPERIMENT_MALU_WEBRTC_COTURN_PASSWORD,
+								},
+							],
+							sdpSemantics: "unified-plan",
+						},
+					},
+				),
+			);
+			initializaton.current = "done";
 		};
 		setup().catch((error) => {
 			console.error(error);
@@ -262,8 +257,16 @@ export default function Page() {
 				<section className="call-container" hidden ref={containerElement}>
 					<div className="audio-container">
 						<p>You're automatically muted, unmute yourself!</p>
-						<audio controls muted ref={remoteAudioElement}></audio>
-						<audio controls muted ref={localAudioElement}></audio>
+						<div style={{ display: "flex" }}>
+							<div style={{ flexGrow: 1 }}>
+								<p>remote</p>
+								<audio controls muted ref={remoteAudioElement}></audio>
+							</div>
+							<div style={{ flexGrow: 1 }}>
+								<p>local</p>
+								<audio controls muted ref={localAudioElement}></audio>
+							</div>
+						</div>
 					</div>
 					<button
 						className="hangup-btn"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")/../../ca"
-source .env.${NODE_ENV:-development}.local
+source ../.env.${NODE_ENV:-development}.local
 DIR="$(pwd)"
 
 #from https://github.com/filosottile/mkcert#linux
@@ -34,3 +34,5 @@ rm -f rootCA-key.pem
 rm rootCA.pem
 mkcert -install
 mkcert -key-file "$EXPERIMENT_MALU_WEBRTC_CA_KEY" -cert-file "$EXPERIMENT_MALU_WEBRTC_CA_CERT" "$EXPERIMENT_MALU_WEBRTC_CA_HOST"
+cat "$DIR/rootCA.pem" "$EXPERIMENT_MALU_WEBRTC_CA_CERT" > "$DIR/certs.pembundle"
+cp "$DIR/rootCA.pem" "$DIR/../public/rootCA.pem"
