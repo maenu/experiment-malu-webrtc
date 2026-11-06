@@ -9,11 +9,18 @@ Currently, it is based on a local VM running the signal server and web server, a
 The signal server is contacted by all clients, then negotiates a P2P connection for audio between clients.
 The web server serves the client entry point.
 
-## Setup
+## Setup (Ubuntu)
 
-Run an Ubuntu Server with Docker.
+```
+./bin/env/install-development.sh # creates environment file
+./bin/ca/install.sh # creates ca
+./bin/coturn/install.sh # installs coturn server
+curl -fsSL https://mise.run | sh
+echo "eval \"\$(~/.local/bin/mise activate bash)\"" >> ~/.bashrc
+mise install
+pnpm install .
+```
 
-Create CA: `./bin/ca/install.sh`.
 Install `ca/rootCA.pem` into Firefox at `about:settings#connectionSecurity`, `Certificates > Manage certificates > Authorities > Import...`.
 
 CA installed, HSTS enabled. To go back to HTTP, you need to forget HSTS by `Ctrl Shift H`, find this site, right-click, `Forget about this site...`, open site again in new tab (this tab has not forgotten about HSTS yet).
@@ -26,13 +33,7 @@ Run the signaling server [PeerJS](https://peerjs.com/): `./bin/peerjs/start-serv
 
 Run the TURN/STUN server [coturn](https://github.com/coturn/coturn): `./bin/coturn/start-server.sh`
 
-Clone this repo on the server and run it as a [NextJS](https://nextjs.org/) app
-
-```
-mise install
-pnpm install .
-pnpm run dev
-```
+Run the web server [NextJS](https://nextjs.org/): `pnpm run dev`
 
 This project followed a basic Mozilla tutorial [Building an Internet-Connected Phone with PeerJS](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Build_a_phone_with_peerjs).
 
